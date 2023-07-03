@@ -6,7 +6,7 @@
 /*   By: mlongo <mlongo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:54:25 by mlongo            #+#    #+#             */
-/*   Updated: 2023/07/03 17:52:17 by mlongo           ###   ########.fr       */
+/*   Updated: 2023/07/03 19:26:21 by mlongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,52 @@ public class Program {
 	int n = 0;
 	int nweek = 1;
 	long grades = 0;
-	String week = "";
 	Scanner getline = new Scanner(System.in);
 	String  line = getline.nextLine();
 
-	week = week.concat("week " + nweek);
-	if (!week.equals(line)) {
-		System.err.println("wrong week order");
-		System.exit(-1);
+	while (n != 42 && nweek != 18) {
+		if (!line.equals("Week " + nweek)) {
+			if (line.equals("42"))
+				break ;
+			System.err.println("IllegalArgument");
+			System.exit(-1);
+		}
+		nweek++;
+		i = 0;
+		min = -1;
+		while (i < 5) {
+			n = getline.nextInt();
+			if (n == 42)
+				break ;
+			if (min < 0)
+				min = n;
+			else if (n < min)
+				min = n;
+			i++;
+		}
+		if (n != 42 && nweek != 18) {
+			grades = grades + PowerTen(min, nweek - 1);
+			line = getline.nextLine();
+			line = getline.nextLine();
+		}
 	}
-	while (i < 5) {
-		n = getline.nextInt();
-		if (n == 42)
-			break ;
-		if (min < 0)
-			min = n;
-		else if (n < min)
-			min = n;
+	i = 1;
+	while (grades > 0) {
+		System.out.print("Week " + i);
+		for (long j = grades % 10; j > 0; j--) {
+			System.out.print("=");
+		}
+		System.out.println(">");
+		grades = grades / 10;
 		i++;
 	}
-	grades = grades * 10 + min;
-
-
-	System.out.println(grades);
-	if (n < 0) {
-		System.err.println("negative vote");
-		System.exit(-1);
-	}
    }
+	private static long PowerTen(long num, int k) {
+		long powten = 1;
+		for (int i = 1; i < k; i++){
+			powten = powten * 10;
+		}
+		num = num * powten;
+		return (num);
+	}
 }

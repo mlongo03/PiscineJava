@@ -6,7 +6,7 @@
 /*   By: mlongo <mlongo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 15:12:25 by mlongo            #+#    #+#             */
-/*   Updated: 2023/07/03 16:39:26 by mlongo           ###   ########.fr       */
+/*   Updated: 2023/07/03 18:59:29 by mlongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ public class Program {
 	Scanner getnum = new Scanner(System.in);
 
 	n = getnum.nextInt();
-	while (n % 100 != 42 && n > 2) {
+	while (n != 42 && n > 2) {
 		while (n > 10) {
 			sum = sum + (n % 10);
 			n /= 10;
