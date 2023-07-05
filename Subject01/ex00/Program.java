@@ -5,38 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlongo <mlongo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/03 14:52:07 by mlongo            #+#    #+#             */
-/*   Updated: 2023/07/05 16:04:50 by mlongo           ###   ########.fr       */
+/*   Created: 2023/07/05 16:27:30 by mlongo            #+#    #+#             */
+/*   Updated: 2023/07/05 17:36:19 by mlongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import java.util.Scanner;
 
-public class  Program {
-   public static void main(String[] args) {
-	int n;
-	int i = 2;
-	Scanner getnum = new Scanner(System.in);
-
-	n = getnum.nextInt();
-	if (n < 2) {
-		System.err.println("IllegalArgument");
-		getnum.close();
-		System.exit(-1);
+public class Program {
+	public static void main(String[] args) {
+		User user1;
+		User user2;
+		Transaction transaction;
+		
 	}
-	else
-		while (i < n) {
-			if (n % i++ == 0) {
-				break;
-			}
-		}
-	if (i == n) {
-		System.out.println("true " + (i - 2));
-	}
-	else {
-		System.out.println("false " + (i - 2));
-	}
-	getnum.close();
-	System.exit(0);
-   }
 }

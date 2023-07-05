@@ -6,7 +6,7 @@
 /*   By: mlongo <mlongo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:54:25 by mlongo            #+#    #+#             */
-/*   Updated: 2023/07/03 19:26:21 by mlongo           ###   ########.fr       */
+/*   Updated: 2023/07/05 16:03:46 by mlongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ public class Program {
 
 	while (n != 42 && nweek != 18) {
 		if (!line.equals("Week " + nweek)) {
-			if (line.equals("42"))
+			if (line.equals("42")) {
 				break ;
+			}
 			System.err.println("IllegalArgument");
 			System.exit(-1);
 		}
@@ -34,12 +35,15 @@ public class Program {
 		min = -1;
 		while (i < 5) {
 			n = getline.nextInt();
-			if (n == 42)
+			if (n == 42) {
 				break ;
-			if (min < 0)
+			}
+			if (min < 0) {
 				min = n;
-			else if (n < min)
+			}
+			else if (n < min) {
 				min = n;
+			}
 			i++;
 		}
 		if (n != 42 && nweek != 18) {
@@ -58,6 +62,7 @@ public class Program {
 		grades = grades / 10;
 		i++;
 	}
+	getline.close();
    }
 	private static long PowerTen(long num, int k) {
 		long powten = 1;
