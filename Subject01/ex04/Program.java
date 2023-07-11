@@ -44,7 +44,7 @@ class	Program {
 		}
 		System.out.println("------------------------------------------------");
 		trs = ts.RetrieveUserTransaction(marco.getID());
-		ts.RetrieveUserTransaction(marco.getID());
+		ts.RemoveUserTransaction(marco.getID(), trs[1].getID());
 		trs = ts.RetrieveUserTransaction(marco.getID());
 		System.out.println("Marco's transactions after remove: ");
 		for (Transaction tr : trs) {
