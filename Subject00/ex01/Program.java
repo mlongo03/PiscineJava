@@ -6,7 +6,7 @@
 /*   By: mlongo <mlongo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 14:52:07 by mlongo            #+#    #+#             */
-/*   Updated: 2023/07/05 16:04:50 by mlongo           ###   ########.fr       */
+/*   Updated: 2023/07/06 12:56:28 by mlongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ public class  Program {
 	Scanner getnum = new Scanner(System.in);
 
 	n = getnum.nextInt();
+	if (n == 2) {
+		System.out.println("true 0");
+		getnum.close();
+		System.exit(0);
+	}
 	if (n < 2) {
 		System.err.println("IllegalArgument");
 		getnum.close();

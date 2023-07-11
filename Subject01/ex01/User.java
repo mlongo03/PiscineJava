@@ -5,32 +5,23 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlongo <mlongo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/05 17:29:16 by mlongo            #+#    #+#             */
-/*   Updated: 2023/07/06 19:26:41 by mlongo           ###   ########.fr       */
+/*   Created: 2023/07/06 19:03:37 by mlongo            #+#    #+#             */
+/*   Updated: 2023/07/10 14:32:06 by mlongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 public class User {
-    private int identifier;
+    private final int id;
     private String name;
     private double balance;
 
-    public User(int identifier, String name, double balance) {
-        this.identifier = identifier;
+    public User(String name, double balance) {
+        this.id = UserIdsGenerator.getInstance().generateId();
         this.name = name;
-        if (balance < 0) {
-            System.err.println("wrong amount of balance");
-            balance = 0;
-        }
-        else {
-            this.balance = balance;
-        }
+        this.balance = balance;
     }
 
-    public int getIdentifier() {
-        return identifier;
-    }
-
+    // Getters for name, balance
     public String getName() {
         return name;
     }
@@ -39,8 +30,9 @@ public class User {
         return balance;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
+    // Getters for id (read-only)
+    public int getId() {
+        return id;
     }
 }
 

@@ -6,7 +6,7 @@
 /*   By: mlongo <mlongo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 10:41:44 by mlongo            #+#    #+#             */
-/*   Updated: 2023/07/05 17:59:22 by mlongo           ###   ########.fr       */
+/*   Updated: 2023/07/06 18:48:44 by mlongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,16 @@ public class Program {
 	BubbleSort(lettersData, nletters);
 	int n = 0;
 	int k = 0;
+	int limitletters = 0;
+	if (nletters < 10) {
+		limitletters = nletters;
+	}
+	else {
+		limitletters = 10;
+	}
 	for (int i = 10 + 2; i >= 0; i--) {
 		k = 0;
-		for (int j = nletters - 1; k < 10; j--) {
+		for (int j = nletters - 1; k < limitletters; j--) {
 			n = map(lettersData[j][1], 0, lettersData[nletters - 1][1], 0, 10);
 			if (i == n + 1) {
 				if (lettersData[j][1] < 10) {
