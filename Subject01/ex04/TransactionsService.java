@@ -6,7 +6,7 @@
 /*   By: mlongo <mlongo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:02:57 by mlongo            #+#    #+#             */
-/*   Updated: 2023/07/11 17:19:35 by mlongo           ###   ########.fr       */
+/*   Updated: 2023/07/12 12:40:29 by mlongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ public class TransactionsService {
 			Credit = new Transaction(recipient, sender, Transaction.category.credit, transferAmount);
 			Credit.setID(Debit.getID());
 			recipient.setBalance(recipient.getBalance() + transferAmount);
-			sender.setBalance(recipient.getBalance() - transferAmount);
+			sender.setBalance(sender.getBalance() - transferAmount);
 		}
 		else {
 			Debit = new Transaction(recipient, sender, Transaction.category.debit, transferAmount);
 			Credit = new Transaction(recipient, sender, Transaction.category.credit, -transferAmount);
 			Credit.setID(Debit.getID());
 			recipient.setBalance(recipient.getBalance() + (-transferAmount));
-			sender.setBalance(recipient.getBalance() - (-transferAmount));
+			sender.setBalance(sender.getBalance() - (-transferAmount));
 		}
 		this.UserArray.getUserById(recipient.getID()).getTransactions().addTransaction(Credit);
 		this.UserArray.getUserById(sender.getID()).getTransactions().addTransaction(Debit);

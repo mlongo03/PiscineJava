@@ -6,7 +6,7 @@ public class TransactionsLinkedList implements TransactionsList {
 	private int			size;
 
 	public TransactionsLinkedList() {
-		
+
 		this.node = null;
 		this.size = 0;
 	}
@@ -26,8 +26,13 @@ public class TransactionsLinkedList implements TransactionsList {
 
 		Transaction currTransaction = this.node;
 
+		if (currTransaction.getID() == id) {
+			this.node = this.node.getNext();
+			this.size--;
+		}
+
 		while (currTransaction.getNext() != null) {
-			if (currTransaction.getID().equals(id)) {
+			if (currTransaction.getNext().getID() == id) {
 				currTransaction.setNext(currTransaction.getNext().getNext());
 				this.size--;
 				return ;

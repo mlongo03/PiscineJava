@@ -15,8 +15,8 @@ public class TransactionsLinkedList implements TransactionsList {
 
 		Transaction currTransaction = this.node;
 
-		while (currTransaction.getNext() != null) {
-			if (currTransaction.getID().equals(ID)) {
+		while (currTransaction != null) {
+			if (currTransaction.getID() == ID) {
 				return (true);
 			}
 			currTransaction = currTransaction.getNext();
@@ -39,8 +39,13 @@ public class TransactionsLinkedList implements TransactionsList {
 
 		Transaction currTransaction = this.node;
 
+		if (currTransaction.getID() == id) {
+			this.node = this.node.getNext();
+			this.size--;
+		}
+
 		while (currTransaction.getNext() != null) {
-			if (currTransaction.getID().equals(id)) {
+			if (currTransaction.getNext().getID() == id) {
 				currTransaction.setNext(currTransaction.getNext().getNext());
 				this.size--;
 				return ;

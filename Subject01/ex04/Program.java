@@ -17,9 +17,9 @@ class	Program {
 		System.out.println("Giovanni's balance: " + ts.RetrieveUserBalance(giovanni.getID()));
 		System.out.println("Adistef's balance: " + ts.RetrieveUserBalance(adistef.getID()));
 		System.out.println("Afraccal's balance: " + ts.RetrieveUserBalance(afraccal.getID()));
-		ts.DoTransaction(marco, giovanni, Transaction.category.credit, 1000);
-		ts.DoTransaction(adistef, afraccal, Transaction.category.credit, 1000);
-		ts.DoTransaction(afraccal, marco, Transaction.category.credit, 2000);
+		ts.DoTransaction(giovanni, marco, Transaction.category.credit, 1000);
+		ts.DoTransaction(afraccal, adistef, Transaction.category.credit, 1000);
+		ts.DoTransaction(marco, afraccal, Transaction.category.credit, 2000);
 		System.out.println("------------------------------------------------");
 		System.out.println("After: ");
 		System.out.println("Marco's balance: " + ts.RetrieveUserBalance(marco.getID()));
@@ -29,6 +29,21 @@ class	Program {
 		System.out.println("------------------------------------------------");
 		trs = ts.RetrieveUserTransaction(marco.getID());
 		System.out.println("Marco's transactions: ");
+		for (Transaction tr : trs) {
+			System.out.println(tr);
+		}
+		trs = ts.RetrieveUserTransaction(adistef.getID());
+		System.out.println("Adistef's transactions: ");
+		for (Transaction tr : trs) {
+			System.out.println(tr);
+		}
+		trs = ts.RetrieveUserTransaction(giovanni.getID());
+		System.out.println("Giovanni's transactions: ");
+		for (Transaction tr : trs) {
+			System.out.println(tr);
+		}
+		trs = ts.RetrieveUserTransaction(afraccal.getID());
+		System.out.println("Afraccal's transactions: ");
 		for (Transaction tr : trs) {
 			System.out.println(tr);
 		}
