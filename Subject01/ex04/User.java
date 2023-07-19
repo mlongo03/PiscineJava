@@ -1,5 +1,11 @@
 public class User {
 
+	public class UserNotFoundException extends RuntimeException {
+		public UserNotFoundException(String message) {
+			super(message);
+		}
+	}
+
 	private int						id;
 	private String  				name;
 	private int						balance;

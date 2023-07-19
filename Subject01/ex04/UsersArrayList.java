@@ -1,6 +1,11 @@
-import java.util.ArrayList;
 
 public class UsersArrayList implements UsersList {
+
+	public class UserNotFoundException extends RuntimeException {
+		public UserNotFoundException(String message) {
+			super(message);
+		}
+	}
 
     private User[] arrayList;
     private int size;

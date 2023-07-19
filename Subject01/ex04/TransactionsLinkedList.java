@@ -2,24 +2,34 @@ import java.util.UUID;
 
 public class TransactionsLinkedList implements TransactionsList {
 
-	private Transaction	node;
-	private int			size;
+	private class Node {
+
+		private Transaction	Node;
+		private Node Next;
+	}
+
+	public class TransactionNotFoundException extends RuntimeException {
+		public TransactionNotFoundException(String message) {
+			super(message);
+		}
+	}
+
+	private Node head;
+	private int size;
 
 	public TransactionsLinkedList() {
-
-		this.node = null;
 		this.size = 0;
 	}
 
 	public boolean FindTransaction(UUID ID) {
 
-		Transaction currTransaction = this.node;
+		Node currTransaction = this.head;
 
 		while (currTransaction != null) {
-			if (currTransaction.getID() == ID) {
+			if (currTransaction.Node.getID() == ID) {
 				return (true);
 			}
-			currTransaction = currTransaction.getNext();
+			currTransaction = currTransaction.Next;
 		}
 		return (false);
 	}
@@ -27,30 +37,34 @@ public class TransactionsLinkedList implements TransactionsList {
 	@Override
 	public void addTransaction(Transaction transaction) {
 
-		if (this.node != null) {
-			transaction.setNext(this.node);
+		if (this.head == null) {
+			this.head = new Node();
 		}
-		this.node = transaction;
+		else {
+			this.head.Next = new Node();
+			this.head.Next.Node = this.head.Node;
+		}
+		this.head.Node = transaction;
 		this.size++;
 	}
 
 	@Override
 	public void removeTransaction(UUID id) throws TransactionNotFoundException {
 
-		Transaction currTransaction = this.node;
+		Node tmp = this.head;
 
-		if (currTransaction.getID() == id) {
-			this.node = this.node.getNext();
+		if (tmp.Node.getID() == id) {
+			tmp = tmp.Next;
 			this.size--;
 		}
 
-		while (currTransaction.getNext() != null) {
-			if (currTransaction.getNext().getID() == id) {
-				currTransaction.setNext(currTransaction.getNext().getNext());
+		while (tmp.Next != null) {
+			if (tmp.Next.Node.getID() == id) {
+				tmp.Next = tmp.Next.Next;
 				this.size--;
 				return ;
 			}
-			currTransaction = currTransaction.getNext();
+			tmp = tmp.Next;
 		}
 		throw new TransactionNotFoundException("Transaction not found");
 	}
@@ -59,13 +73,13 @@ public class TransactionsLinkedList implements TransactionsList {
 	public Transaction[] toArray() {
 
 		int				i = 0;
-		Transaction		tmp = this.node;
+		Node			tmpNode = this.head;
 		Transaction[]	arrayList = new Transaction[this.size];
 
 		while (i < this.size) {
-			arrayList[i] = tmp;
+			arrayList[i] = tmpNode.Node;
 			i++;
-			tmp = tmp.getNext();
+			tmpNode = tmpNode.Next;
 		}
 		return (arrayList);
 	}

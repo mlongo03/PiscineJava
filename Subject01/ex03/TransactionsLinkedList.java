@@ -13,7 +13,7 @@ public class TransactionsLinkedList implements TransactionsList {
 			super(message);
 		}
 	}
-	
+
 	private Node head;
 	private int size;
 
@@ -38,18 +38,21 @@ public class TransactionsLinkedList implements TransactionsList {
 	@Override
 	public void removeTransaction(UUID id) throws TransactionNotFoundException {
 
-		if (this.head.Node.getID() == id) {
-			this.head.Node = this.head.Next.Node;
+		Node tmp = this.head;
+
+		if (tmp.Node.getID() == id) {
+			tmp = tmp.Next;
 			this.size--;
+			return ;
 		}
 
-		while (this.head.Next != null) {
-			if (this.head.Next.Node.getID() == id) {
-				this.head.Next.Node = this.head.Next.Next.Node;
+		while (tmp.Next != null) {
+			if (tmp.Next.Node.getID() == id) {
+				tmp.Next = tmp.Next.Next;
 				this.size--;
 				return ;
 			}
-			this.head = this.head.Next;
+			tmp = tmp.Next;
 		}
 		throw new TransactionNotFoundException("Transaction not found");
 	}
