@@ -13,7 +13,7 @@ public class Egg extends Thread implements Runnable {
 
         for (int i = 0; i < this.count; i++) {
 			System.out.println("Egg");
-            data.put();
+            data.put(i, count);
         }
     }
 }

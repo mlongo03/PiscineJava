@@ -2,21 +2,18 @@ public class Data {
 
     private final Object lock = new Object();
 
-    public void put() {
-        
+    public void put(int i, int count) {
+
         synchronized (this.lock) {
             try {
                 this.lock.notify();
-                while (true) {
+                if (i != count - 1) {
                     this.lock.wait();
-                    break ;
                 }
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        }
-        synchronized (this.lock) {
-				this.lock.notify();
         }
     }
 }
