@@ -1,34 +1,38 @@
-// import java.io.*;
-// import java.util.*;
-
-// public class Program {
-// 	public void main(String[] args) {
-// 		if (args.length != 2) {
-// 			System.out.println("Numero argomenti errato");
-// 		}
-
-// 	}
-// }
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.*;
 
 public class Program {
+
+    private static final String DICTIONARY = "dictionary.txt";
+
     public static void main(String[] args) {
-        String filePath_A = args[0];
-        String filePath_B = args[1];
 
-        try (FileReader fileReader = new FileReader(filePath_A);
-             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+        Dictionary dictionary = new Dictionary();
 
-            String line;
-            line = bufferedReader.readLine();
-                System.out.println(line);
+        if (args.length != 2) {
+            System.err.println("Error: put only two files");
+            System.exit(-1);
+        }
+
+        try (FileReader inputA = new FileReader(args[0]);
+                FileReader inputB = new FileReader(args[1]);
+                BufferedReader buffInputA = new BufferedReader(inputA);
+                BufferedReader buffInputB = new BufferedReader(inputB);
+                FileOutputStream fileoutput = new FileOutputStream(DICTIONARY)) {
+                
+                dictionary.createDictionary(args[0], args[1]);
+                dictionary.saveWord(DICTIONARY);
+
+                Similarity similarity = new Similarity();
+
+                LinkedHashMap<String, Integer> wordCountA = similarity.countWords(args[0], dictionary.createDictionary(args[0], args[1]));
+
+                LinkedHashMap<String, Integer> wordCountB = similarity.countWords(args[1], dictionary.createDictionary(args[0], args[1]));
+
+                System.out.println("Similarity = " + Math.floor(similarity.calculateSimilarity(wordCountA, wordCountB) * 100) / 100);
 
         } catch (IOException e) {
-            System.out.println("An error occurred while reading the file: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }
-

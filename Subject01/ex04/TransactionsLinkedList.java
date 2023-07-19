@@ -72,6 +72,10 @@ public class TransactionsLinkedList implements TransactionsList {
 	@Override
 	public Transaction[] toArray() {
 
+		if (this.head == null) {
+			return null;
+		}
+
 		int				i = 0;
 		Node			tmpNode = this.head;
 		Transaction[]	arrayList = new Transaction[this.size];
