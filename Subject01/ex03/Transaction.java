@@ -13,7 +13,6 @@ public class Transaction {
 	private User		sender;
 	private category	transferCategory;
 	private int			transferAmount;
-	private Transaction next;
 
 	public Transaction (User recipient, User sender, category transferCategory, int transferAmount) {
 		this.id = UUID.randomUUID();
@@ -59,13 +58,5 @@ public class Transaction {
 
 	public int getTransferAmount() {
 		return (this.transferAmount);
-	}
-
-	public Transaction getNext() {
-		return (this.next);
-	}
-
-	public void setNext(Transaction next) {
-		this.next = next;
 	}
 }

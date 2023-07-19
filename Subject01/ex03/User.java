@@ -1,12 +1,18 @@
 public class User {
 
+	public class UserNotFoundException extends RuntimeException {
+		public UserNotFoundException(String message) {
+			super(message);
+		}
+	}
+
 	private int						id;
 	private String  				name;
 	private int						balance;
 	private TransactionsLinkedList	transactions;
 
 	public User (String name, int balance) {
-		
+
         this.id = UserIdsGenerator.getInstance().generateId();
 		this.name = name;
 		if (balance < 0) {
