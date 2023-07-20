@@ -19,7 +19,7 @@ public class Program {
                 BufferedReader buffInputA = new BufferedReader(inputA);
                 BufferedReader buffInputB = new BufferedReader(inputB);
                 FileOutputStream fileoutput = new FileOutputStream(DICTIONARY)) {
-                
+
                 dictionary.createDictionary(args[0], args[1]);
                 dictionary.saveWord(DICTIONARY);
 

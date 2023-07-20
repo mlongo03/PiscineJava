@@ -3,7 +3,7 @@ public class Egg extends Thread implements Runnable {
     private int count;
     Data        data;
 
-    public Egg(int count, Data data) {
+    public Egg(int count, Data data, int index) {
         this.count = count;
         this.data = data;
     }

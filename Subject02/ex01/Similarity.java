@@ -8,10 +8,10 @@ public class Similarity {
 
     public LinkedHashMap<String, Integer> countWords(String filePath, Set<String> dictionary) {
 
-        LinkedHashMap<String, Integer> wordCount = new LinkedHashMap<>(); // HashMap ordinata per mantenere l'ordine delle parole del dizionario
+        LinkedHashMap<String, Integer> wordCount = new LinkedHashMap<>();
 
         for (String word : dictionary) {
-            wordCount.put(word, 0); // Inizializza il conteggio a 0 per ogni parola del dizionario
+            wordCount.put(word, 0);
         }
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
 
@@ -24,7 +24,7 @@ public class Similarity {
                 for (String word : words) {
                     if (!word.isEmpty() && dictionary.contains(word.toLowerCase())) {
                         lowercaseWord = word.toLowerCase();
-                        wordCount.put(lowercaseWord, wordCount.get(lowercaseWord) + 1); // Incrementa il conteggio per ogni occorrenza di una parola nel file
+                        wordCount.put(lowercaseWord, wordCount.get(lowercaseWord) + 1);
                     }
                 }
             }
@@ -51,6 +51,6 @@ public class Similarity {
             normB += Math.pow(value, 2);
         }
         denominator = Math.sqrt(normA) * Math.sqrt(normB);
-        return (numerator / denominator);
+        return ((numerator == 0 || denominator == 0) ? 0 : numerator / denominator);
     }
 }
