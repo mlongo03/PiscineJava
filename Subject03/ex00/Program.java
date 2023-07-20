@@ -1,9 +1,6 @@
 public class Program {
 
     public static void main(String[] args) {
-        
-        // Hen         hen;
-		// Egg         egg;
         String[]    input;
         int         count = 0;
 
@@ -22,21 +19,18 @@ public class Program {
             System.out.println("Not a integer");
         }
 
-        Hen henThread = new Hen(count);
-        Egg eggThread = new Egg(count);
+        Hen henThread = new Hen();
+        Egg eggThread = new Egg();
 
-        henThread.start();
-        eggThread.start();
-        // Thread  t1 = new Thread(new Hen(count));
-        // Thread  t2 = new Thread(new Egg(count));
-
-        // t1.start();
-        // t2.start();
+        for (int i = 0; i < count; i++) {
+            henThread = new Hen();
+            eggThread = new Egg();
+            henThread.start();
+            eggThread.start();
+        }
         try {
             henThread.join();
             eggThread.join();
-            // t1.join();
-            // t2.join();
         } catch (InterruptedException e) {
 			System.out.println("Error: thread has been interrupted");
 			System.exit(-1);
