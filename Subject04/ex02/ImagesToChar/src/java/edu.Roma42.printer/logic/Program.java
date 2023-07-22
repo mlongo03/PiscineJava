@@ -16,10 +16,23 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import javax.swing.*;
+import com.diogonunes.jcolor.AnsiFormat;
+import com.diogonunes.jcolor.Attribute;
+import com.diogonunes.jcolor.Ansi;
 
 
 public class Program {
-	public static void main(String[] args) {
+
+    public static void main(String[] args) {
+//         // Apply color and style to text
+//         String coloredText = Ansi.colorize("Hello, World!", Attribute.GREEN_TEXT(), Attribute.BOLD(), Attribute.WHITE_BACK());
+
+//         // Print colored text to the console
+//         System.out.println(coloredText);
+// }
+
+
+// 	public static void main(String[] args) {
 
 		Args arg = new Args();
 		JCommander.newBuilder()
@@ -28,12 +41,6 @@ public class Program {
             .parse(args);
         arg.run();
 
-		// try {
-		// 	imgbmp.seeBMPImage("./target/resources/it.bmp", args[0].toCharArray()[0], args[1].toCharArray()[0]);
-		// }
-
-		// catch (Exception e) {
-		// 	System.out.println(e.getMessage());
-		// }
 	}
 }
+
