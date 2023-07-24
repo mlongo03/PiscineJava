@@ -3,47 +3,47 @@ class	Program {
 	static public void	main(String args[]) {
 		TransactionsService	ts = new TransactionsService();
 		Transaction			trs[];
-		User				giovanni = new User("Giovanni", 1000);
-		User				marco = new User("Marco", 2000);
-		User				adistef = new User("Adistef", 3000);
-		User				afraccal = new User("Afraccal", 4000);
+		User				Lorenzo = new User("Lorenzo", 1000);
+		User				Flaviano = new User("Flaviano", 2000);
+		User				Francesco = new User("Francesco", 3000);
+		User				Manuele = new User("Manuele", 4000);
 
-		ts.addUser(giovanni);
-		ts.addUser(marco);
-		ts.addUser(adistef);
-		ts.addUser(afraccal);
+		ts.addUser(Lorenzo);
+		ts.addUser(Flaviano);
+		ts.addUser(Francesco);
+		ts.addUser(Manuele);
 		System.out.println("Before: ");
-		System.out.println("Marco's balance: " + ts.RetrieveUserBalance(marco.getID()));
-		System.out.println("Giovanni's balance: " + ts.RetrieveUserBalance(giovanni.getID()));
-		System.out.println("Adistef's balance: " + ts.RetrieveUserBalance(adistef.getID()));
-		System.out.println("Afraccal's balance: " + ts.RetrieveUserBalance(afraccal.getID()));
-		ts.DoTransaction(giovanni, marco, Transaction.category.credit, 1000);
-		ts.DoTransaction(afraccal, adistef, Transaction.category.credit, 1000);
-		ts.DoTransaction(marco, afraccal, Transaction.category.credit, 2000);
+		System.out.println("Flaviano's balance: " + ts.RetrieveUserBalance(Flaviano.getID()));
+		System.out.println("Lorenzo's balance: " + ts.RetrieveUserBalance(Lorenzo.getID()));
+		System.out.println("Francesco's balance: " + ts.RetrieveUserBalance(Francesco.getID()));
+		System.out.println("Manuele's balance: " + ts.RetrieveUserBalance(Manuele.getID()));
+		ts.DoTransaction(Lorenzo, Flaviano, Transaction.category.credit, 1000);
+		ts.DoTransaction(Manuele, Francesco, Transaction.category.credit, 1000);
+		ts.DoTransaction(Flaviano, Manuele, Transaction.category.credit, 2000);
 		System.out.println("------------------------------------------------");
 		System.out.println("After: ");
-		System.out.println("Marco's balance: " + ts.RetrieveUserBalance(marco.getID()));
-		System.out.println("Giovanni's balance: " + ts.RetrieveUserBalance(giovanni.getID()));
-		System.out.println("Adistef's balance: " + ts.RetrieveUserBalance(adistef.getID()));
-		System.out.println("Afraccal's balance: " + ts.RetrieveUserBalance(afraccal.getID()));
+		System.out.println("Flaviano's balance: " + ts.RetrieveUserBalance(Flaviano.getID()));
+		System.out.println("Lorenzo's balance: " + ts.RetrieveUserBalance(Lorenzo.getID()));
+		System.out.println("Francesco's balance: " + ts.RetrieveUserBalance(Francesco.getID()));
+		System.out.println("Manuele's balance: " + ts.RetrieveUserBalance(Manuele.getID()));
 		System.out.println("------------------------------------------------");
-		trs = ts.RetrieveUserTransaction(marco.getID());
-		System.out.println("Marco's transactions: ");
+		trs = ts.RetrieveUserTransaction(Flaviano.getID());
+		System.out.println("Flaviano's transactions: ");
 		for (Transaction tr : trs) {
 			System.out.println(tr);
 		}
-		trs = ts.RetrieveUserTransaction(adistef.getID());
-		System.out.println("Adistef's transactions: ");
+		trs = ts.RetrieveUserTransaction(Francesco.getID());
+		System.out.println("Francesco's transactions: ");
 		for (Transaction tr : trs) {
 			System.out.println(tr);
 		}
-		trs = ts.RetrieveUserTransaction(giovanni.getID());
-		System.out.println("Giovanni's transactions: ");
+		trs = ts.RetrieveUserTransaction(Lorenzo.getID());
+		System.out.println("Lorenzo's transactions: ");
 		for (Transaction tr : trs) {
 			System.out.println(tr);
 		}
-		trs = ts.RetrieveUserTransaction(afraccal.getID());
-		System.out.println("Afraccal's transactions: ");
+		trs = ts.RetrieveUserTransaction(Manuele.getID());
+		System.out.println("Manuele's transactions: ");
 		for (Transaction tr : trs) {
 			System.out.println(tr);
 		}
@@ -58,10 +58,10 @@ class	Program {
 			}
 		}
 		System.out.println("------------------------------------------------");
-		trs = ts.RetrieveUserTransaction(marco.getID());
-		ts.RemoveUserTransaction(marco.getID(), trs[1].getID());
-		trs = ts.RetrieveUserTransaction(marco.getID());
-		System.out.println("Marco's transactions after remove: ");
+		trs = ts.RetrieveUserTransaction(Flaviano.getID());
+		ts.RemoveUserTransaction(Flaviano.getID(), trs[1].getID());
+		trs = ts.RetrieveUserTransaction(Flaviano.getID());
+		System.out.println("Flaviano's transactions after remove: ");
 		for (Transaction tr : trs) {
 			System.out.println(tr);
 		}

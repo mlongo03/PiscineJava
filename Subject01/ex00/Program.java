@@ -6,21 +6,18 @@
 /*   By: mlongo <mlongo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 16:27:30 by mlongo            #+#    #+#             */
-/*   Updated: 2023/07/05 18:41:27 by mlongo           ###   ########.fr       */
+/*   Updated: 2023/07/24 13:11:46 by mlongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 public class Program {
     public static void main(String[] args) {
-        // Create users
         User user1 = new User(1, "John", 100.0);
         User user2 = new User(2, "Jane", 50.0);
 
-        // Create a transaction
         Transaction transaction = new Transaction(user1, user2, "debit", 20.0);
 
-        // Print user details
         System.out.println("User 1:");
         System.out.println("Identifier: " + user1.getIdentifier());
         System.out.println("Name: " + user1.getName());
@@ -35,7 +32,6 @@ public class Program {
 
         System.out.println();
 
-        // Print transaction details
         System.out.println("Transaction:");
         System.out.println("Identifier: " + transaction.getIdentifier());
         System.out.println("Recipient: " + transaction.getRecipient().getName());

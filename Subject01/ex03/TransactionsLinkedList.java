@@ -24,14 +24,11 @@ public class TransactionsLinkedList implements TransactionsList {
 	@Override
 	public void addTransaction(Transaction transaction) {
 
-		if (this.head == null) {
-			this.head = new Node();
-		}
-		else {
-			this.head.Next = new Node();
-			this.head.Next.Node = this.head.Node;
-		}
-		this.head.Node = transaction;
+		Node tmpNode = new Node();
+
+		tmpNode.Node = transaction;
+		tmpNode.Next = this.head;
+		this.head = tmpNode;
 		this.size++;
 	}
 

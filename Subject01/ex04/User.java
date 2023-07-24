@@ -1,5 +1,10 @@
 public class User {
 
+	public class UserBalanceWrong extends RuntimeException {
+		public UserBalanceWrong(String message) {
+			super(message);
+		}
+	}
 	public class UserNotFoundException extends RuntimeException {
 		public UserNotFoundException(String message) {
 			super(message);
@@ -12,12 +17,11 @@ public class User {
 	private TransactionsLinkedList	transactions;
 
 	public User (String name, int balance) {
-
         this.id = UserIdsGenerator.getInstance().generateId();
 		this.name = name;
 		if (balance < 0) {
-			System.out.println("invalid balance");
 			this.balance = 0;
+			throw new UserBalanceWrong("invalid balance");
 		}
 		else {
 			this.balance = balance;
@@ -44,7 +48,7 @@ public class User {
 
 	public void setBalance(int balance) {
         if (balance < 0) {
-			System.out.println("invalid balance");
+			throw new UserBalanceWrong("invalid balance");
 		}
 		else {
 			this.balance = balance;

@@ -6,7 +6,7 @@
 /*   By: mlongo <mlongo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 19:03:45 by mlongo            #+#    #+#             */
-/*   Updated: 2023/07/10 14:34:41 by mlongo           ###   ########.fr       */
+/*   Updated: 2023/07/24 13:26:41 by mlongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@ public class UserIdsGenerator {
     private int lastGeneratedId;
 
     private UserIdsGenerator() {
-        // Private constructor
     }
 
     public static UserIdsGenerator getInstance() {

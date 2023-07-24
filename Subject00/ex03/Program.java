@@ -6,7 +6,7 @@
 /*   By: mlongo <mlongo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:54:25 by mlongo            #+#    #+#             */
-/*   Updated: 2023/07/05 16:03:46 by mlongo           ###   ########.fr       */
+/*   Updated: 2023/07/24 12:58:06 by mlongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ public class Program {
 	Scanner getline = new Scanner(System.in);
 	String  line = getline.nextLine();
 
-	while (n != 42 && nweek != 18) {
+	while (n != 42 && nweek != 19) {
 		if (!line.equals("Week " + nweek)) {
 			if (line.equals("42")) {
 				break ;
@@ -46,7 +46,7 @@ public class Program {
 			}
 			i++;
 		}
-		if (n != 42 && nweek != 18) {
+		if (n != 42) {
 			grades = grades + PowerTen(min, nweek - 1);
 			line = getline.nextLine();
 			line = getline.nextLine();
