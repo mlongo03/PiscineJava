@@ -19,13 +19,13 @@ public class Program {
         } catch (NumberFormatException e) {
             System.out.println("Not a integer");
         }
-        
+
         Data    data = new Data();
         Hen     henThread = new Hen(count, data);
         Egg     eggThread = new Egg(count, data);
 
-        henThread.start();
         eggThread.start();
+        henThread.start();
         try {
             henThread.join();
             eggThread.join();

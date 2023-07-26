@@ -47,14 +47,15 @@ public class Program {
         displayArraySum(arr);
         int sectionSize = arraySize / threadsCount;
         int start = 0;
-        int end = sectionSize;
+        int end = sectionSize - 1;
         ArrayList<ThreadSum> threads = new ArrayList<>();
 
         for (int i = 0; i < threadsCount - 1; i++) {
             threads.add(new ThreadSum(i + 1, start, end, arr));
-            start += sectionSize + 1;
-            end += start;
+            start += sectionSize;
+            end += sectionSize;
         }
+
         threads.add(new ThreadSum(threadsCount, start, arraySize - 1, arr));
         for (Thread thread : threads) {
             thread.start();
