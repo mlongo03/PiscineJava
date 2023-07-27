@@ -20,17 +20,17 @@ public class Img {
 	public void seeBMPImage(String BMPFileName, char black, char white) throws IOException {
 		BufferedImage image = ImageIO.read(new FileInputStream(BMPFileName));
 
-		int[][] array2D = new int[image.getHeight()][image.getWidth()]; //*
+		int[][] array2D = new int[image.getHeight()][image.getWidth()];
 
-		for (int xPixel = 0; xPixel < image.getHeight(); xPixel++) //*
+		for (int xPixel = 0; xPixel < image.getHeight(); xPixel++)
 		{
-			for (int yPixel = 0; yPixel < image.getWidth(); yPixel++) //*
+			for (int yPixel = 0; yPixel < image.getWidth(); yPixel++)
 			{
-				int color = image.getRGB(yPixel, xPixel); //*
+				int color = image.getRGB(yPixel, xPixel);
 				if (color==Color.BLACK.getRGB()) {
 					array2D[xPixel][yPixel] = black;
 				} else {
-					array2D[xPixel][yPixel] = white; // ?
+					array2D[xPixel][yPixel] = white;
 				}
 			}
 		}
