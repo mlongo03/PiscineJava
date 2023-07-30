@@ -2,9 +2,9 @@ package edu.Roma42.chat.repositories;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Optional;
 
 import javax.sql.DataSource;
@@ -28,6 +28,31 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
 		chatroomRepo = new ChatroomRepositoryJdbcImpl(ds);
 	}
 
+	@Override
+	public void save(Message message) {
+
+		String query = "INSERT INTO Message (author, room, text, date) VALUES (?, ?, ?, ?)";
+
+		try (Connection connection = this.dataSource.getConnection()) {
+			PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+			ps.setLong(1, message.getauthor().getID());
+			ps.setLong(2, message.getroom().getID());
+			ps.setString(3, message.gettext());
+			ps.setString(4, message.getdate());
+			ps.executeUpdate();
+
+			try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					message.setID(generatedKeys.getLong(1));
+				} else {
+					throw new SQLException("Creating player failed, no ID obtained.");
+				}
+			}
+
+		} catch (SQLException ex) {
+		}
+	}
 
 	@Override
 	public Optional<Message> findById(Long id) {

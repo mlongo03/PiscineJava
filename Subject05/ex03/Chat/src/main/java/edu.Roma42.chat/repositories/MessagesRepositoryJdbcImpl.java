@@ -2,9 +2,9 @@ package edu.Roma42.chat.repositories;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Optional;
 
 import javax.sql.DataSource;
@@ -28,6 +28,55 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
 		chatroomRepo = new ChatroomRepositoryJdbcImpl(ds);
 	}
 
+	@Override
+	public void save(Message message) {
+
+		String query = "INSERT INTO Message (author, room, text, date) VALUES (?, ?, ?, ?)";
+
+		try (Connection connection = this.dataSource.getConnection()) {
+			PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+			ps.setLong(1, message.getauthor().getID());
+			ps.setLong(2, message.getroom().getID());
+			ps.setString(3, message.gettext());
+			ps.setString(4, message.getdate());
+			ps.executeUpdate();
+
+			try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					message.setID(generatedKeys.getLong(1));
+				} else {
+					throw new SQLException("Creating player failed, no ID obtained.");
+				}
+			}
+
+		} catch (SQLException ex) {
+		}
+	}
+
+    @Override
+    public void update(Message message) {
+
+        String query = "UPDATE tank.player SET " + "author = ?, room = ?, text = ?, date = ? WHERE id = ?";
+
+		try (Connection connection = this.dataSource.getConnection()) {
+			PreparedStatement ps = connection.prepareStatement(query);
+
+			ps.setLong(1, message.getauthor().getID());
+			ps.setLong(2, message.getroom().getID());
+			ps.setString(3, message.gettext());
+			ps.setString(4, message.getdate());
+            ps.setLong(5, message.getID());
+
+            int rowsUpdated = ps.executeUpdate();
+
+            if (rowsUpdated == 0) {
+                // throw new DataAccessException("No rows matched the update criteria");
+            }
+        } catch (SQLException ex) {
+            // throw new DataAccessException("Error updating player", ex);
+        }
+    }
 
 	@Override
 	public Optional<Message> findById(Long id) {
