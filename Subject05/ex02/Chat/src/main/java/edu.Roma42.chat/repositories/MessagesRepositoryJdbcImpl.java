@@ -18,16 +18,28 @@ import edu.Roma42.chat.models.Message;
 
 public class MessagesRepositoryJdbcImpl implements MessagesRepository {
 
+	public class NotSavedSubEntityException extends RuntimeException {
+
+		public NotSavedSubEntityException(String message) {
+
+			super(message);
+		}
+	}
+
     private Map<Long, Message> messageCache = new HashMap<>();
 	private UserRepositoryJdbcImpl userRepo;
 	private ChatroomRepositoryJdbcImpl chatroomRepo;
 	private Connection connection;
 
-	public MessagesRepositoryJdbcImpl(Connection con, UserRepositoryJdbcImpl us, ChatroomRepositoryJdbcImpl room) {
+	public MessagesRepositoryJdbcImpl(HikariDataSource dataSource, UserRepositoryJdbcImpl us, ChatroomRepositoryJdbcImpl room) {
 
-		this.connection = con;
 		this.userRepo = us;
 		this.chatroomRepo = room;
+		try {
+			this.connection = dataSource.getConnection();
+		} catch (Exception e) {
+			System.out.println("error during connection");
+		}
 	}
 
 	public void setUserRepo(UserRepositoryJdbcImpl us) {
@@ -60,9 +72,8 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
 					throw new SQLException("Creating player failed, no ID obtained.");
 				}
 			}
-
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			throw new NotSavedSubEntityException("author or room not saved in the database");
 		}
 	}
 

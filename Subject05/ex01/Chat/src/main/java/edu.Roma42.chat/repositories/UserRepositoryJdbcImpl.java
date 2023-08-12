@@ -24,10 +24,14 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 	private ChatroomRepositoryJdbcImpl chatroomRepo;
 	private Connection connection;
 
-	public UserRepositoryJdbcImpl(Connection con, ChatroomRepositoryJdbcImpl room) {
+	public UserRepositoryJdbcImpl(HikariDataSource dataSource, ChatroomRepositoryJdbcImpl room) {
 
-		this.connection = con;
 		this.chatroomRepo = room;
+		try {
+			this.connection = dataSource.getConnection();
+		} catch (Exception e) {
+			System.out.println("error during connection");
+		}
 	}
 
 	public void setChatroomRepo(ChatroomRepositoryJdbcImpl room) {

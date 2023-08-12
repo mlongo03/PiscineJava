@@ -59,7 +59,7 @@
           <archive>
             <manifest>
               <mainClass>
-                edu.school21.game.app.Program
+                edu.Roma42.chat.app.Program
               </mainClass>
             </manifest>
           </archive>

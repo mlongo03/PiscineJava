@@ -23,11 +23,15 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
 	private ChatroomRepositoryJdbcImpl chatroomRepo;
 	private Connection connection;
 
-	public MessagesRepositoryJdbcImpl(Connection con, UserRepositoryJdbcImpl us, ChatroomRepositoryJdbcImpl room) {
+	public MessagesRepositoryJdbcImpl(HikariDataSource dataSource, UserRepositoryJdbcImpl us, ChatroomRepositoryJdbcImpl room) {
 
-		this.connection = con;
 		this.userRepo = us;
 		this.chatroomRepo = room;
+		try {
+			this.connection = dataSource.getConnection();
+		} catch (Exception e) {
+			System.out.println("error during connection");
+		}
 	}
 
 	public void setUserRepo(UserRepositoryJdbcImpl us) {

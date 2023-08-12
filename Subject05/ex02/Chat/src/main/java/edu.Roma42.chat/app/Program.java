@@ -61,15 +61,9 @@ public class Program {
         }
 
             Message msgs = null;
-            Connection con = null;
-            try {
-                con = dataSource.getConnection();
-            } catch (Exception e) {
-                System.out.println("error during connection");
-            }
-            UserRepositoryJdbcImpl userRepo = new UserRepositoryJdbcImpl(con, null);
-            ChatroomRepositoryJdbcImpl chatroomRepo = new ChatroomRepositoryJdbcImpl(con, null, userRepo);
-            MessagesRepositoryJdbcImpl messageRepo = new MessagesRepositoryJdbcImpl(con, userRepo, chatroomRepo);
+            UserRepositoryJdbcImpl userRepo = new UserRepositoryJdbcImpl(dataSource, null);
+            ChatroomRepositoryJdbcImpl chatroomRepo = new ChatroomRepositoryJdbcImpl(dataSource, null, userRepo);
+            MessagesRepositoryJdbcImpl messageRepo = new MessagesRepositoryJdbcImpl(dataSource, userRepo, chatroomRepo);
 
             userRepo.setChatroomRepo(chatroomRepo);
             chatroomRepo.setUserRepo(userRepo);
@@ -90,6 +84,9 @@ public class Program {
             }
 
             Message message = new Message(0L, author, room, "Hello!", "12/06/2023");
+            messageRepo.save(message);
+            author.setID(90L);
+            room.setID(90L);
             messageRepo.save(message);
             dataSource.close();
 
