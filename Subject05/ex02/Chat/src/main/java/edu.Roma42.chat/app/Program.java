@@ -1,3 +1,5 @@
+package edu.Roma42.chat.app;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -6,23 +8,27 @@ import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
+import edu.Roma42.chat.repositories.*;
+import edu.Roma42.chat.models.*;
 
 public class Program {
     public static void main(String[] args) {
-        // HikariCP configuration
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:postgresql://localhost:5432/mydatabase");
-        config.setUsername("myuser");
-        config.setPassword("mypassword");
+        config.setJdbcUrl("jdbc:postgresql://localhost:5432/postgres");
+        config.setUsername("alessiolongo");
+        config.setPassword("test");
 
-        // Create the HikariDataSource
         HikariDataSource dataSource = new HikariDataSource(config);
 
-        // Read SQL statements from the file
-        String fileName = "schema.sql";
+        String fileName = "./target/classes/schema.sql";
         File sqlFile = new File(fileName);
         StringBuilder sqlStatements = new StringBuilder();
+        String datafileName = "./target/classes/data.sql";
+        File datasqlFile = new File(datafileName);
+        StringBuilder datasqlStatements = new StringBuilder();
 
         try (Scanner scanner = new Scanner(sqlFile)) {
             while (scanner.hasNextLine()) {
@@ -34,18 +40,59 @@ public class Program {
             return;
         }
 
-        // Execute SQL statements using HikariCP connection
+        try (Scanner scanner = new Scanner(datasqlFile)) {
+            while (scanner.hasNextLine()) {
+                datasqlStatements.append(scanner.nextLine()).append("\n");
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + datafileName);
+            e.printStackTrace();
+            return;
+        }
+
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             statement.execute(sqlStatements.toString());
+            statement.execute(datasqlStatements.toString());
             System.out.println("SQL statements executed successfully!");
         } catch (SQLException e) {
             System.err.println("Error executing SQL statements:");
             e.printStackTrace();
-        } finally {
-            // Close the HikariDataSource when the application shuts down
-            dataSource.close();
         }
+
+            Message msgs = null;
+            Connection con = null;
+            try {
+                con = dataSource.getConnection();
+            } catch (Exception e) {
+                System.out.println("error during connection");
+            }
+            UserRepositoryJdbcImpl userRepo = new UserRepositoryJdbcImpl(con, null);
+            ChatroomRepositoryJdbcImpl chatroomRepo = new ChatroomRepositoryJdbcImpl(con, null, userRepo);
+            MessagesRepositoryJdbcImpl messageRepo = new MessagesRepositoryJdbcImpl(con, userRepo, chatroomRepo);
+
+            userRepo.setChatroomRepo(chatroomRepo);
+            chatroomRepo.setUserRepo(userRepo);
+
+            User creator = null;
+
+            Optional<User> us = userRepo.findById(1L);
+            if (us.isPresent()) {
+                creator = us.get();
+            }
+
+            User author = creator;
+            Chatroom room = null;
+
+            Optional<Chatroom> ch = chatroomRepo.findById(1L);
+            if (ch.isPresent()) {
+                room = ch.get();
+            }
+
+            Message message = new Message(0L, author, room, "Hello!", "12/06/2023");
+            messageRepo.save(message);
+            dataSource.close();
+
     }
 }
 

@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 import java.util.Optional;
 
 import javax.sql.ConnectionEvent;
@@ -20,33 +21,52 @@ import edu.Roma42.chat.models.User;
 
 public class ChatroomRepositoryJdbcImpl implements ChatroomRepository {
 
-	HikariDataSource dataSource;
-	UserRepositoryJdbcImpl userRepo;
-	MessagesRepositoryJdbcImpl messageRepo;
+    private Map<Long, Chatroom> chatroomCache = new HashMap<>();
+	private UserRepositoryJdbcImpl userRepo;
+	private MessagesRepositoryJdbcImpl messageRepo;
+	private Connection connection;
 
-	public ChatroomRepositoryJdbcImpl(HikariDataSource ds) {
+	public ChatroomRepositoryJdbcImpl(Connection con, MessagesRepositoryJdbcImpl ms, UserRepositoryJdbcImpl us) {
 
-		this.dataSource = ds;
-		this.userRepo = new UserRepositoryJdbcImpl(ds);
-		this.messageRepo = new MessagesRepositoryJdbcImpl(ds);
+		this.connection = con;
+		this.userRepo = us;
+		this.messageRepo = ms;
+	}
+
+	public void setUserRepo(UserRepositoryJdbcImpl us) {
+		this.userRepo = us;
+	}
+
+	public void setMessagesRepo(MessagesRepositoryJdbcImpl ms) {
+		this.messageRepo = ms;
 	}
 
 	@Override
 	public Optional<Chatroom> findById(Long id) {
 
-		String query = "SELECT * FROM chat.Chatroom WHERE id = ?";
+        if (chatroomCache.containsKey(id)) {
+            return Optional.of(chatroomCache.get(id));
+        }
 
-		try (Connection connection = this.dataSource.getConnection()) {
-			PreparedStatement ps = connection.prepareStatement(query);
+		Chatroom placeholderChatroom = new Chatroom(id, null, null, null);
+        chatroomCache.put(id, placeholderChatroom);
 
-		ps.setLong(1, id);
+		String query = "SELECT * FROM chat.chatroom WHERE id = ?";
 
-		try (ResultSet rs = ps.executeQuery()) {
-			if (rs.next()) {
-				Chatroom chat = mapChatroom(rs);
-				return (Optional.of(chat));
+		try {
+			PreparedStatement ps = this.connection.prepareStatement(query);
+
+			ps.setLong(1, id);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					Chatroom chat = mapChatroom(rs);
+					chatroomCache.put(id, chat);
+					return (Optional.of(chat));
+				}
+			} catch (Exception e){
+				System.out.println("error during mapchatroom");
 			}
-		}
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}
@@ -78,9 +98,9 @@ public class ChatroomRepositoryJdbcImpl implements ChatroomRepository {
    public ArrayList<Message> getMessagesForChatroom(long chatroomId) {
         ArrayList<Message> messages = new ArrayList<>();
 
-        String sql = "SELECT id, author, text, date FROM Message WHERE room = ?";
-		try (Connection connection = this.dataSource.getConnection()) {
-			PreparedStatement statement = connection.prepareStatement(sql);
+        String sql = "SELECT id, author, text, date FROM chat.message WHERE room = ?";
+		try {
+			PreparedStatement statement = this.connection.prepareStatement(sql);
             statement.setLong(1, chatroomId);
 
             try (ResultSet resultSet = statement.executeQuery()) {

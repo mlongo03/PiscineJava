@@ -2,9 +2,10 @@ package edu.Roma42.chat.repositories;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
 import java.util.Optional;
 
 import javax.sql.DataSource;
@@ -17,24 +18,34 @@ import edu.Roma42.chat.models.Message;
 
 public class MessagesRepositoryJdbcImpl implements MessagesRepository {
 
-	HikariDataSource dataSource;
-	UserRepositoryJdbcImpl userRepo;
-	ChatroomRepositoryJdbcImpl chatroomRepo;
+    private Map<Long, Message> messageCache = new HashMap<>();
+	private UserRepositoryJdbcImpl userRepo;
+	private ChatroomRepositoryJdbcImpl chatroomRepo;
+	private Connection connection;
 
-	public MessagesRepositoryJdbcImpl(HikariDataSource ds) {
+	public MessagesRepositoryJdbcImpl(Connection con, UserRepositoryJdbcImpl us, ChatroomRepositoryJdbcImpl room) {
 
-		this.dataSource = ds;
-		userRepo = new UserRepositoryJdbcImpl(ds);
-		chatroomRepo = new ChatroomRepositoryJdbcImpl(ds);
+		this.connection = con;
+		this.userRepo = us;
+		this.chatroomRepo = room;
+	}
+
+	public void setUserRepo(UserRepositoryJdbcImpl us) {
+		this.userRepo = us;
+	}
+
+	public void setChatroomRepo(ChatroomRepositoryJdbcImpl room) {
+		this.chatroomRepo = room;
 	}
 
 	@Override
 	public void save(Message message) {
 
-		String query = "INSERT INTO Message (author, room, text, date) VALUES (?, ?, ?, ?)";
+		String query = "INSERT INTO chat.message (author, room, text, date) VALUES (?, ?, ?, ?)";
 
-		try (Connection connection = this.dataSource.getConnection()) {
-			PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+		try {
+
+			PreparedStatement ps = this.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
 			ps.setLong(1, message.getauthor().getID());
 			ps.setLong(2, message.getroom().getID());
@@ -51,22 +62,32 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
 			}
 
 		} catch (SQLException ex) {
+			ex.printStackTrace();
 		}
 	}
 
 	@Override
 	public Optional<Message> findById(Long id) {
 
-		String query = "SELECT * FROM chat.Message WHERE id = ?";
+		if (messageCache.containsKey(id)) {
+            return Optional.of(messageCache.get(id));
+        }
 
-		try (Connection connection = this.dataSource.getConnection()) {
-			PreparedStatement ps = connection.prepareStatement(query);
+		Message placeholderMessage = new Message(id, null, null, null, null);
+        messageCache.put(id, placeholderMessage);
+
+		String query = "SELECT * FROM chat.message WHERE id = ?";
+
+		try {
+
+		PreparedStatement ps = this.connection.prepareStatement(query);
 
 		ps.setLong(1, id);
 
 		try (ResultSet rs = ps.executeQuery()) {
 			if (rs.next()) {
 				Message msg = mapMessage(rs);
+        		messageCache.put(id, msg);
 				return (Optional.of(msg));
 			}
 		}
@@ -102,6 +123,4 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
 		}
 		return (new Message(id, author, room, text, date));
 	}
-
-
 }
