@@ -1,9 +1,10 @@
 package edu.Roma42.app;
 
-	import java.lang.reflect.Constructor;
-	import java.lang.reflect.Field;
-	import java.lang.reflect.Method;
-	import java.util.Scanner;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.Scanner;
 
 public class Program {
 	public static void main(String[] args) throws Exception {
@@ -26,7 +27,13 @@ public class Program {
 
 		System.out.println("methods:");
 		for (Method method : clazz.getDeclaredMethods()) {
-			System.out.println(method.getReturnType().getSimpleName() + " " + method.getName() + "(" + method.getParameterCount() + " parameter(s))");
+			System.out.print(method.getReturnType().getSimpleName() + " " + method.getName() + "(");
+			for (int i = 0; i < method.getParameterTypes().length; i++) {
+				System.out.print(method.getParameterTypes()[i].getSimpleName());
+				if (i != method.getParameterTypes().length - 1)
+					System.out.print(",");
+			}
+			System.out.println(")");
 		}
 		System.out.println("---------------------");
 
@@ -55,17 +62,46 @@ public class Program {
 
 		System.out.println("Enter name of the method for call:");
 		String methodName = scanner.nextLine();
+		char par = '(';
+		String trimmethodName = methodName.substring(0, methodName.indexOf(par));
+		Class<?>[] parameterTypes = null;
+		int count = 0;
 
-		Method methodToCall = clazz.getDeclaredMethod(methodName, int.class);
-		System.out.println("Enter int value:");
-		int intValue = scanner.nextInt();
-		Object result = methodToCall.invoke(object, intValue);
+		for (char c : methodName.toCharArray()) {
+			if (c == ',')
+				count++;
+		}
+		for (Method meth : clazz.getDeclaredMethods()) {
+			if (meth.getName().equals(trimmethodName)) {
+				parameterTypes = meth.getParameterTypes();
+				if (count != meth.getParameterTypes().length - 1) {
+					System.err.println("method declaration wrong");
+					System.exit(1);
+				}
+			}
+		}
+
+		LinkedList<Object> Values = new LinkedList<>();
+
+		Method methodToCall = clazz.getDeclaredMethod(trimmethodName, parameterTypes);
+		for (int i = 0; i < methodToCall.getParameterTypes().length; i++) {
+			System.out.println("Enter " + methodToCall.getParameterTypes()[i].getSimpleName() + " value:");
+			if (methodToCall.getParameterTypes()[i].getSimpleName().equals("int")) {
+				int intValue = scanner.nextInt();
+				Values.add(intValue);
+			}
+			else {
+				String Value = scanner.nextLine();
+				Values.add(Value);
+			}
+		}
+
+		Object result = methodToCall.invoke(object, Values.toArray());
 
 		if (methodToCall.getReturnType() != void.class) {
 			System.out.println("Method returned:");
 			System.out.println(result);
 		}
-
 		scanner.close();
 	}
 

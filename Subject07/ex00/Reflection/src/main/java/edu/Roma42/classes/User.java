@@ -2,7 +2,7 @@ package edu.Roma42.classes;
 
 import java.util.StringJoiner;
 
-class User {
+public class User {
 
 	private String firstName;
 	private String lastName;
@@ -19,14 +19,15 @@ class User {
 		this.height = height;
 	}
 
-	public int grow(int value) {
+	public int grow(int value, int value2) {
 		this.height += value;
+		this.height += value2;
 		return height;
 	}
 
 	@Override
 	public String toString() {
-		return new StringJoiner(", ", User.class . getSimpleName() + "[", "]")
+		return new StringJoiner(", ", User.class.getSimpleName() + "[", "]")
 		.add("firstName='" + firstName + "'")
 		.add("lastName='" + lastName + "'")
 		.add("height=" + height)
